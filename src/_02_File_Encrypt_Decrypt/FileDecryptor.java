@@ -1,5 +1,11 @@
 package _02_File_Encrypt_Decrypt;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
+
 public class FileDecryptor {
 	/*
 	 * Decryption is the process of taking encoded or encrypted text or other data
@@ -19,4 +25,25 @@ public class FileDecryptor {
 	 * Create a program that opens the file created by FileEncryptor and decrypts
 	 * the message, then display it to the user in a JOptionPane.
 	 */
+	public static void main(String[] args) {
+		FileEncryptor f3 = new FileEncryptor();
+		f3.run();
+		String k = "";
+		try {
+			FileReader yum = new FileReader("src/_02_File_Encrypt_Decrypt/Gimli.txt");
+			int c = yum.read();
+			k += (char) (c - f3.key);
+			while(c != -1){
+				c = yum.read();
+				k += (char) (c - f3.key);
+			}
+			yum.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		JOptionPane.showMessageDialog(null, k);
+	}
 }
