@@ -2,6 +2,11 @@ package _03_To_Do_List;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -18,6 +23,8 @@ public class ToDoList implements ActionListener {
 	JButton b4 = new JButton();
 	JButton b5 = new JButton();
 	ArrayList<Task> t = new ArrayList<Task>();
+	FileReader fr;
+	FileWriter fw; 
 
 	/*
 	 * Create a program with five buttons, add task, view tasks, remove task, save
@@ -76,11 +83,58 @@ public class ToDoList implements ActionListener {
 				JOptionPane.showMessageDialog(null, t.get(i).getMethod());
 			}
 		} else if (e.getSource() == b3) {
-
-		} else if (e.getSource() == b4) {
-
+			String s = "Which task would you like to remove? ";
+			for (int i = 0; i < t.size(); i++) {
+				s+= "\n" + (i+1) + ": " + t.get(i).getMethod();
+			}
+			String remove = JOptionPane.showInputDialog(null, s);
+			int remover = Integer.parseInt(remove);
+			for (int i = 0; i <= t.size(); i++) {
+				if (remover == (i+1)) {
+					Task k = t.get(i);
+					t.remove(t.get(i));
+					if (remover > t.size() ||remover <= 0) {
+						JOptionPane.showMessageDialog(null, "Invalid response");
+					}
+					else {
+					JOptionPane.showMessageDialog(null, (i+1) + ": " + k.getMethod() + " was TERMINATED!");
+					}
+				}
+			}
+			
+			
 		} else if (e.getSource() == b5) {
-
+			
+		String FileLocation = JOptionPane.showInputDialog(null, "");
+		try {
+			fr = new FileReader(FileLocation);
+			t.clear();
+			BufferedReader br = new BufferedReader(fr);
+			String s = br.readLine();
+			while (s != null) {
+				t.add(new Task(s));
+				s = br.readLine();
+			}
+			fr.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		} else if (e.getSource() == b4) {
+			String xio = "";
+			for (int i = 0; i < t.size(); i++) {
+				xio += t.get(i).getMethod() + "\n";
+			}
+			
+			try {
+				fw = new FileWriter("list.txt");
+				fw.write(xio);
+				fw.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 
 	}
